@@ -15,7 +15,7 @@
 
 5. pip install pillow OpenCV-python
 
-5.1 pip install swig
+5.1 conda install swig
 
 6. <Use of GitHub Desktop preferred> 
 	<Clone> https://github.com/NotAnyMike/gym
