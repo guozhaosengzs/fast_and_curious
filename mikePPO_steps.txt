@@ -1,8 +1,10 @@
 <!!! Use a seperate terminal, do not use VSCode!!!! VSCode does not activate conda env correctly> 
 
-1. conda create -n CRPPO python=3.6
+1.
+conda create -n CRPPO python=3.6
 
-2. conda activate CRPPO
+2.
+conda activate CRPPO
 
 3.1 <Mac>
 	brew install cmake openmpi
@@ -11,20 +13,27 @@
 	<download and install> https://www.microsoft.com/en-us/download/details.aspx?id=57467
 	pip install stable-baselines[mpi]==2.9.0
 
-4. conda install tensorflow=1.13
+4. 
+conda install tensorflow=1.13
 
-5. pip install pillow OpenCV-python
+5. 
+pip install pillow OpenCV-python
 
-5.1 conda install swig
+6. 
+conda install swig
 
-6. <Use of GitHub Desktop preferred> 
+7. <Use of GitHub Desktop preferred> 
 	<Clone> https://github.com/NotAnyMike/gym
 	<Rename folder as `mike_gym`>
 
-7. cd mike_gym
+8. 
+cd mike_gym
 
-8. pip install '.[Box2D]'
+9. 
+pip install '.[Box2D]'
 
-9. pip install pyglet==v1.3.2
+10. 
+pip install pyglet==v1.3.2
 
-10. python run.py
+11. 
+python run.py
