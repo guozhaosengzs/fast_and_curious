@@ -35,5 +35,5 @@ pip install '.[Box2D]'
 10. 
 pip install pyglet==v1.3.2
 
-11. 
+11. go back to root dir, do:
 python run.py
