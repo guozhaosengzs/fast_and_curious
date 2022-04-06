@@ -24,7 +24,7 @@ pip install pillow OpenCV-python
 6. 
 conda install swig
 
-7. <Use of GitHub Desktop preferred> 
+7. <Use of GitHub Desktop preferred> in root dir, do:
 	<Clone> https://github.com/NotAnyMike/gym
 	<Rename folder as `mike_gym`>
 
@@ -37,5 +37,5 @@ pip install '.[Box2D]'
 10. 
 pip install pyglet==v1.3.2
 
-11. 
+11. go back to root dir, do:
 python run.py
