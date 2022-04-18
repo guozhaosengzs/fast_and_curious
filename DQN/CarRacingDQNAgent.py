@@ -2,6 +2,7 @@ import random
 import numpy as np
 from collections import deque
 from tensorflow.keras.models import Sequential
+from tensorflow.keras import Input
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.optimizers import Adam
 
@@ -34,15 +35,24 @@ class CarRacingDQNAgent:
         self.target_model    = self.build_model()
         self.update_target_model()
 
-    def build_model(self):
+    # def build_model(self):
         # Neural Net for Deep-Q learning Model
+        # model = Sequential()
+        # model.add(Conv2D(filters=6, kernel_size=(7, 7), strides=3, activation='relu', input_shape=(96, 96, self.frame_stack_num)))
+        # model.add(MaxPooling2D(pool_size=(2, 2)))
+        # model.add(Conv2D(filters=12, kernel_size=(4, 4), activation='relu'))
+        # model.add(MaxPooling2D(pool_size=(2, 2)))
+        # model.add(Flatten())
+        # model.add(Dense(216, activation='relu'))
+        # model.add(Dense(len(self.action_space), activation=None))
+        # model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate, epsilon=1e-7))
+        # return model
+
+    def build_model(self):
+        # Logistic Regression
         model = Sequential()
-        model.add(Conv2D(filters=6, kernel_size=(7, 7), strides=3, activation='relu', input_shape=(96, 96, self.frame_stack_num)))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Conv2D(filters=12, kernel_size=(4, 4), activation='relu'))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Input(shape=(96, 96, self.frame_stack_num)))
         model.add(Flatten())
-        model.add(Dense(216, activation='relu'))
         model.add(Dense(len(self.action_space), activation=None))
         model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate, epsilon=1e-7))
         return model
@@ -51,7 +61,22 @@ class CarRacingDQNAgent:
         self.target_model.set_weights(self.model.get_weights())
 
     def memorize(self, state, action, reward, next_state, done):
+        # if len(self.memory) >= 2:
+        #     T_minus_2_action = self.action_space[self.memory[-2][1]]
+        #     T_minus_1_action = self.action_space[self.memory[-1][1]]
+        #     T_minus_0 = action
+
+        #     T_minus_2_steering = T_minus_2_action[0]
+        #     T_minus_1_steering = T_minus_1_action[0]
+        #     T_minus_0_steering = action[0]
+
+        #     if self.memory[-2][0] == action[0] and self.memory[-1][0] != action[0]:
+        #         reward -= 5 #Fill in appropriate number here
+
         self.memory.append((state, self.action_space.index(action), reward, next_state, done))
+
+
+        # self.memory.append((state, self.action_space.index(action), reward, next_state, done))
 
     def act(self, state):
         if np.random.rand() > self.epsilon:
