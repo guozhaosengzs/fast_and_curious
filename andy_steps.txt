@@ -27,7 +27,7 @@ pip install Box2D
 pip install 'h5py==2.10.0' --force-reinstall
 
 8. 
-cd OpenAI-GYM-CarRacing-DQN
+cd DQN
 
 9. 
 python play_car_racing_with_keyboard.py
