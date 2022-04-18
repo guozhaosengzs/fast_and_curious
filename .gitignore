@@ -128,3 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 mike_gym/
+Fast_and_Curious/
+HRL/
+OpenAI-GYM-CarRacing-DQN/

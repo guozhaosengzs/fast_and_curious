@@ -1,0 +1,33 @@
+<!!! Use a seperate terminal, do not use VSCode!!!! VSCode does not activate conda env correctly> 
+0.
+Recommend using `Anaconda Powershell Prompt (anaconda3)`
+
+1. 
+conda create -n dlcar python=3.7
+
+2. 
+conda activate dlcar
+
+3. 
+conda install tensorflow=2.0.0
+
+4. 
+pip install opencv-contrib-python
+
+5.
+conda install pyglet=1.3.2
+
+6.
+pip install gym==0.9.5
+
+7.
+pip install Box2D
+
+8.
+pip install 'h5py==2.10.0' --force-reinstall
+
+8. 
+cd OpenAI-GYM-CarRacing-DQN
+
+9. 
+python play_car_racing_with_keyboard.py
