@@ -32,6 +32,11 @@ if __name__ == '__main__':
     if args.end:
         ENDING_EPISODE = args.end
 
+    # metric
+    steering_records = []
+
+    reward_records = []
+
     for e in range(STARTING_EPISODE, ENDING_EPISODE+1):
         init_state = env.reset()
         init_state = process_state_image(init_state)
@@ -41,11 +46,6 @@ if __name__ == '__main__':
         state_frame_stack_queue = deque([init_state]*agent.frame_stack_num, maxlen=agent.frame_stack_num)
         time_frame_counter = 1
         done = False
-        
-        # steering metric
-        steering_records = []
-
-        reward_records = []
 
         # loop
         while True:
