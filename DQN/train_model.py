@@ -46,6 +46,9 @@ if __name__ == '__main__':
         state_frame_stack_queue = deque([init_state]*agent.frame_stack_num, maxlen=agent.frame_stack_num)
         time_frame_counter = 1
         done = False
+        steering_count = 0
+        gas_count = 0
+        break_count = 0
 
         # loop
         while True:
@@ -54,12 +57,9 @@ if __name__ == '__main__':
 
             current_state_frame_stack = generate_state_frame_stack_from_queue(state_frame_stack_queue)
             action = agent.act(current_state_frame_stack)
-            
+
             # reward tracking
             reward = 0
-        
-            # steering count
-            steering_count = 0
 
             for _ in range(SKIP_FRAMES+1):
                 next_state, r, done, info = env.step(action)
@@ -73,27 +73,53 @@ if __name__ == '__main__':
             # Extra bonus for the model if it uses full gas
             # if action[1] == 1 and action[2] == 0:
             #     reward *= 1.5
-            
 
-            # Extra bonus for no sudden steering 
-            if len(agent.memory) >= 2:
+            # Extra bonus for no sudden steering
+            if len(agent.memory) >= 5:
+                T_minus_4_action = agent.action_space[agent.memory[-4][1]]
+                T_minus_3_action = agent.action_space[agent.memory[-3][1]]
                 T_minus_2_action = agent.action_space[agent.memory[-2][1]]
                 T_minus_1_action = agent.action_space[agent.memory[-1][1]]
 
                 T_minus_2_steering = T_minus_2_action[0]
                 T_minus_1_steering = T_minus_1_action[0]
                 T_minus_0_steering = action[0]
-                
+
+                T_minus_4_gas = T_minus_4_action[1]
+                T_minus_3_gas = T_minus_3_action[1]
+                T_minus_2_gas = T_minus_2_action[1]
+                T_minus_1_gas = T_minus_1_action[1]
+                T_minus_0_gas = action[1]
+
+                T_minus_4_break = T_minus_4_action[2]
+                T_minus_3_break = T_minus_3_action[2]
+                T_minus_2_break = T_minus_2_action[2]
+                T_minus_1_break = T_minus_1_action[2]
+                T_minus_0_break = action[2]
+
                 # if T_minus_2_steering == T_minus_0_steering and T_minus_1_steering != T_minus_0_steering:
                 #     reward -= 0.1
 
                 if T_minus_1_steering * T_minus_0_steering == -1:
-                    reward -= 0.2
+                    reward -= 0.2 # penalty
 
+                recent_5_gas = (T_minus_4_gas, T_minus_3_gas, T_minus_2_gas, T_minus_1_gas, T_minus_0_gas)
+                if all(gas == 1 for gas in recent_5_gas):
+                    reward -= 0.2 # penalty
+
+                recent_5_break = (T_minus_4_break, T_minus_3_break, T_minus_2_break, T_minus_1_break, T_minus_0_break)
+                if all(break == 1 for break in recent_5_break):
+                    reward -= 0.2 # penalty
 
                 # Metric tracker
                 if T_minus_1_steering != T_minus_0_steering:
                     steering_count += 1
+
+                if T_minus_0_gas > 0:
+                    gas_count += 1
+
+                if T_minus_0_break > 0:
+                    break_count += 1
 
             total_reward += reward
 
@@ -105,12 +131,11 @@ if __name__ == '__main__':
 
             if done or negative_reward_counter >= 25 or total_reward < 0:
                 print('Episode: {}/{}, Scores(Time Frames): {}, Total Rewards(adjusted): {:.5}, Epsilon: {:.2}'.format(e, ENDING_EPISODE, time_frame_counter, float(total_reward), float(agent.epsilon)))
-                
                 # save metrics
                 steering_records.append(steering_count / time_frame_counter)
+                gas_records.append(gas_count / time_frame_counter)
+                break_records.append(break_count / time_frame_counter)
                 reward_records.append(total_reward)
-
-
                 break
             if len(agent.memory) > TRAINING_BATCH_SIZE:
                 agent.replay(TRAINING_BATCH_SIZE)
@@ -120,10 +145,10 @@ if __name__ == '__main__':
             agent.update_target_model()
 
         if e % SAVE_TRAINING_FREQUENCY == 0:
-            agent.save('./save/trial_LR_e1000_steering02.h5'.format(e))
+            agent.save('./save/XXX.h5'.format(e))
 
-        # export saved data 
-        metric_df = pd.DataFrame({'steering_per_frame': steering_records, 'rewards': reward_records})
-        metric_df.to_csv('trial_LR_e1000_steering02.csv')
+        # export saved data
+        metric_df = pd.DataFrame({'steering': steering_records, 'gas': gas_records, 'break': break_records, 'rewards': reward_records})
+        metric_df.to_csv('XXX.csv')
 
     env.close()
