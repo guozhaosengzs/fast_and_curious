@@ -104,7 +104,7 @@ if __name__ == '__main__':
             agent.memorize(current_state_frame_stack, action, reward, next_state_frame_stack, done)
 
             if done or negative_reward_counter >= 25 or total_reward < 0:
-                print('Episode: {}/{}, Scores(Time Frames): {}, Total Rewards(adjusted): {:.2}, Epsilon: {:.2}'.format(e, ENDING_EPISODE, time_frame_counter, total_reward, float(agent.epsilon)))
+                print('Episode: {}/{}, Scores(Time Frames): {}, Total Rewards(adjusted): {:.5}, Epsilon: {:.2}'.format(e, ENDING_EPISODE, time_frame_counter, float(total_reward), float(agent.epsilon)))
                 
                 # save metrics
                 steering_records.append(steering_count / time_frame_counter)
