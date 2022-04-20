@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--start', type=int, help='The starting episode, default to 1.')
     parser.add_argument('-e', '--end', type=int, help='The ending episode, default to 1000.')
     parser.add_argument('-p', '--epsilon', type=float, default=1.0, help='The starting epsilon of the agent, default to 1.0.')
+    parser.add_argument('-t', '--trial', help='Specify the number of trial for model and csv to save.')
     args = parser.parse_args()
 
     env = gym.make('CarRacing-v0')
@@ -31,10 +32,13 @@ if __name__ == '__main__':
         STARTING_EPISODE = args.start
     if args.end:
         ENDING_EPISODE = args.end
+    if args.trial:
+        TRIAL = args.trial
 
     # metric
     steering_records = []
-
+    gas_records = []
+    break_records = []
     reward_records = []
 
     for e in range(STARTING_EPISODE, ENDING_EPISODE+1):
@@ -108,7 +112,7 @@ if __name__ == '__main__':
                     reward -= 0.2 # penalty
 
                 recent_5_break = (T_minus_4_break, T_minus_3_break, T_minus_2_break, T_minus_1_break, T_minus_0_break)
-                if all(break == 1 for break in recent_5_break):
+                if all(_break == 1 for _break in recent_5_break):
                     reward -= 0.2 # penalty
 
                 # Metric tracker
@@ -145,10 +149,11 @@ if __name__ == '__main__':
             agent.update_target_model()
 
         if e % SAVE_TRAINING_FREQUENCY == 0:
-            agent.save('./save/XXX.h5'.format(e))
+            model_save_path = './save/' + TRIAL + '.h5'
+            agent.save(model_save_path.format(e))
 
         # export saved data
         metric_df = pd.DataFrame({'steering': steering_records, 'gas': gas_records, 'break': break_records, 'rewards': reward_records})
-        metric_df.to_csv('XXX.csv')
+        metric_df.to_csv(TRIAL + '.csv')
 
     env.close()
