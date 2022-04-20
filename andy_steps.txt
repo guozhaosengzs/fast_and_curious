@@ -36,7 +36,7 @@ cd DQN
 python play_car_racing_with_keyboard.py
 
 12.
-python train_model.py [-m save/trial_XXX.h5] [-s 1] [-e 1000] [-p 1.0]
+python train_model.py [-m save/trial_XXX.h5] [-s 1] [-e 1000] [-p 1.0] [-t 999]
 * delete [] and choose your own command line arguments as well as XXX
 -m The path to the trained model if you wish to continue training after it.
 -s The starting training episode, default to 1.
