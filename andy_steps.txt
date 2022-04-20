@@ -9,7 +9,7 @@ conda create -n dlcar python=3.7
 conda activate dlcar
 
 3. 
-conda install tensorflow=1.15.5
+pip install tensorflow=1.15.5
 
 4. 
 pip install opencv-contrib-python
