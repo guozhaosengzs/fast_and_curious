@@ -38,9 +38,10 @@ python play_car_racing_with_keyboard.py
 12.
 python train_model.py [-m save/trial_XXX.h5] [-s 1] [-e 1000] [-p 1.0]
 * delete [] and choose your own command line arguments as well as XXX
-* -m specify your pretrained model
-* -s start episode
-* 
+-m The path to the trained model if you wish to continue training after it.
+-s The starting training episode, default to 1.
+-e The ending training episode, default to 1000.
+-p The starting epsilon of the agent, default to 1.0.
 
 13.
 python play_car_racing_by_the_model.py -m save/trial_XXX.h5 [-e 1]
