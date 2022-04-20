@@ -26,14 +26,18 @@ pip install Box2D
 8.
 pip install 'h5py==2.10.0' --force-reinstall
 
-8. 
+9.
+pip install pandas
+
+10. 
 cd DQN
 
-9. 
+11. 
 python play_car_racing_with_keyboard.py
 
-10.
+12.
 python train_model.py [-m save/trial_XXX.h5] [-s 1] [-e 1000] [-p 1.0]
+* delete [] and choose your own command line arguments as well as XXX
 
-11.
+13.
 python play_car_racing_by_the_model.py -m save/trial_XXX.h5 [-e 1]
