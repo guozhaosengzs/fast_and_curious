@@ -42,6 +42,7 @@ python train_model.py [-m save/trial_XXX.h5] [-s 1] [-e 1000] [-p 1.0]
 -s The starting training episode, default to 1.
 -e The ending training episode, default to 1000.
 -p The starting epsilon of the agent, default to 1.0.
+-t Specify the number of trial for model and csv to save.
 
 13.
 python play_car_racing_by_the_model.py -m save/trial_XXX.h5 [-e 1]
