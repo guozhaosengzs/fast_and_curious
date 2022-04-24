@@ -34,7 +34,7 @@ if __name__ == '__main__':
         ENDING_EPISODE = args.end
     # if args.trial:
     #     TRIAL = args.trial
-    TRIAL = "CNN_allP_600"
+    TRIAL = "CNN_allP_600_FINAL"
 
     # metric
     steering_records = []
