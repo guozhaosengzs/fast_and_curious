@@ -35,27 +35,27 @@ class CarRacingDQNAgent:
         self.target_model    = self.build_model()
         self.update_target_model()
 
-    # def build_model(self):
-        # Neural Net for Deep-Q learning Model
-        # model = Sequential()
-        # model.add(Conv2D(filters=6, kernel_size=(7, 7), strides=3, activation='relu', input_shape=(96, 96, self.frame_stack_num)))
-        # model.add(MaxPooling2D(pool_size=(2, 2)))
-        # model.add(Conv2D(filters=12, kernel_size=(4, 4), activation='relu'))
-        # model.add(MaxPooling2D(pool_size=(2, 2)))
-        # model.add(Flatten())
-        # model.add(Dense(216, activation='relu'))
-        # model.add(Dense(len(self.action_space), activation=None))
-        # model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate, epsilon=1e-7))
-        # return model
-
     def build_model(self):
-        # Logistic Regression
+        # Neural Net for Deep-Q learning Model
         model = Sequential()
-        model.add(Input(shape=(96, 96, self.frame_stack_num)))
+        model.add(Conv2D(filters=6, kernel_size=(7, 7), strides=3, activation='relu', input_shape=(96, 96, self.frame_stack_num)))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Conv2D(filters=12, kernel_size=(4, 4), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Flatten())
+        model.add(Dense(216, activation='relu'))
         model.add(Dense(len(self.action_space), activation=None))
         model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate, epsilon=1e-7))
         return model
+
+    # def build_model(self):
+    #     # Logistic Regression
+    #     model = Sequential()
+    #     model.add(Input(shape=(96, 96, self.frame_stack_num)))
+    #     model.add(Flatten())
+    #     model.add(Dense(len(self.action_space), activation=None))
+    #     model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate, epsilon=1e-7))
+    #     return model
 
     def update_target_model(self):
         self.target_model.set_weights(self.model.get_weights())
