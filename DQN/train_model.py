@@ -34,7 +34,7 @@ if __name__ == '__main__':
         ENDING_EPISODE = args.end
     # if args.trial:
     #     TRIAL = args.trial
-    TRIAL = "CNN_allP_1000"
+    TRIAL = "CNN_allP_600"
 
     # metric
     steering_records = []
@@ -75,9 +75,11 @@ if __name__ == '__main__':
             # If continually getting negative reward 10 times after the tolerance steps, terminate this episode
             negative_reward_counter = negative_reward_counter + 1 if time_frame_counter > 100 and reward < 0 else 0
 
-            # Extra bonus for the model if it does not uses gas and break at the same time
-            if action[1] != 1 or action[2] != 0.2:
-                reward *= 1.5
+            # Extra bonus for the model if it does not using gas and break at the same time
+            if (action[1] == 1 and action[2] == 0): 
+                reward *= 1.1
+            if (action[1] == 0 and action[2] == 0.2):
+                reward *= 1.1
 
             # Extra bonus for no sudden steering
             if len(agent.memory) >= 2:
@@ -87,27 +89,30 @@ if __name__ == '__main__':
                 T_minus_0_steering = action[0]
 
                 if T_minus_1_steering * T_minus_0_steering == -1:
-                    reward -= 0.2 # penalty
+                    reward -= 0.1 # penalty
                 
                 # Metric tracker
                 if T_minus_1_steering != T_minus_0_steering: 
                     steering_count += 1 # steering change
 
             # Extra bonus for no continuos break or gas 
-            if len(agent.memory) >= 5:
+            if len(agent.memory) >= 10:
 
-                action_list = [action] # from current state to T-4 state
-                for i in range(-1, -5, -1):   
+                action_list = [action] # from current state to T-9 state
+                for i in range(-1, -9, -1):   
                     action_list.append(agent.action_space[agent.memory[i][1]])
 
                 recent_gas = [a[1] for a in action_list]  
                 recent_break = [a[2] for a in action_list]    
 
                 if all(g == 1 for g in recent_gas):
-                    reward -= 0.2 # penalty
+                    reward -= 0.05 # penalty
 
                 if all(b == 0.2 for b in recent_break):
-                    reward -= 0.2 # penalty
+                    reward -= 0.05 # penalty
+
+                if all(g == 0 for g in recent_gas) and all(b == 0 for b in recent_break):
+                    reward -= 5 # penalty
             
             # Metric tracker
             if action[1] == 1: # Gas
